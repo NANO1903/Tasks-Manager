@@ -12,13 +12,22 @@ const getTasks = (req, res) => {
 
 // Create a new task in the database
 const createTasks = async (req, res) => {
-    const task = await Task.create(req.body);
+    try {
+        const task = await Task.create(req.body);
 
-    res.status(201).json({
-        success: true,
-        message: 'Task created',
-        task
-    });
+        res.status(201).json({
+            success: true,
+            message: 'Task created',
+            task
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Error creating task',
+            error: error.message
+        });
+    }
+
 }
 
 // Fetch a single task from the database
