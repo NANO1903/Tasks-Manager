@@ -1,27 +1,16 @@
+// controllers/tasks.js
 const Task = require('../models/task');
 
+// Fetch all tasks from the database
 const getTasks = (req, res) => {
 
     res.status(200).json({
         success: true,
-        message: 'All items',
-        tasks: [
-            {
-                "name": "Dinner time",
-                "completed": false,
-                "_id": "6ac567dd645dba6c7832a75b",
-                "__v": 0
-            }, 
-            {
-                "name": "Breakfast time",
-                "completed": false,
-                "_id": "6ac5646e645dba6c7832a759",
-                "__v": 0
-            }
-        ]
+        message: 'All items'
     });
 }
 
+// Create a new task in the database
 const createTasks = async (req, res) => {
     const task = await Task.create(req.body);
 
@@ -32,6 +21,7 @@ const createTasks = async (req, res) => {
     });
 }
 
+// Fetch a single task from the database
 const getTask = (req, res) => {
     res.status(200).json({
         success: true,
@@ -40,6 +30,7 @@ const getTask = (req, res) => {
     });
 }
 
+// Update a task in the database
 const updateTasks = (req, res) => {
     res.status(201).json({
         success: true,
@@ -49,6 +40,7 @@ const updateTasks = (req, res) => {
     });
 }
 
+// Delete a task from the database
 const deleteTasks = (req, res) => {
     res.status(200).json({
         success: true,
@@ -57,6 +49,7 @@ const deleteTasks = (req, res) => {
     });
 }
 
+// Export the controller functions
 module.exports = {
     getTasks,
     createTasks,
