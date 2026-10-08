@@ -3,10 +3,10 @@
 const express = require('express');
 const {
     getTasks,
-    createTasks,
+    createTask,
     getTask,
-    updateTasks,
-    deleteTasks
+    updateTask,
+    deleteTask
 } = require('../controllers/tasks');
 
 
@@ -14,8 +14,8 @@ const router = express.Router();
 
 
 // Routing
-router.route('/').get(getTasks).post(createTasks);
-router.route('/:id').get(getTask).patch(updateTasks).delete(deleteTasks);
+router.route('/').get(getTasks).post(createTask);
+router.route('/:id').get(getTask).patch(updateTask).delete(deleteTask);
 
 
 module.exports = router;

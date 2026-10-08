@@ -11,7 +11,7 @@ const getTasks = (req, res) => {
 }
 
 // Create a new task in the database
-const createTasks = async (req, res) => {
+const createTask = async (req, res) => {
     try {
         const task = await Task.create(req.body);
 
@@ -40,7 +40,7 @@ const getTask = (req, res) => {
 }
 
 // Update a task in the database
-const updateTasks = (req, res) => {
+const updateTask = (req, res) => {
     res.status(201).json({
         success: true,
         message: 'Task updated',
@@ -50,7 +50,7 @@ const updateTasks = (req, res) => {
 }
 
 // Delete a task from the database
-const deleteTasks = (req, res) => {
+const deleteTask = (req, res) => {
     res.status(200).json({
         success: true,
         message: 'Task deleted',
@@ -61,8 +61,8 @@ const deleteTasks = (req, res) => {
 // Export the controller functions
 module.exports = {
     getTasks,
-    createTasks,
+    createTask,
     getTask,
-    updateTasks,
-    deleteTasks
+    updateTask,
+    deleteTask
 }
