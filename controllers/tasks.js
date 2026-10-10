@@ -2,12 +2,22 @@
 const Task = require('../models/task');
 
 // Fetch all tasks from the database
-const getTasks = (req, res) => {
+const getTasks = async (req, res) => {
+    try {
+        const tasks = await Task.find({});
 
-    res.status(200).json({
-        success: true,
-        message: 'All items'
-    });
+        res.status(200).json({
+            success: true,
+            tasks
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Error fetching tasks',
+            error: error.message
+        });
+    }
 }
 
 // Create a new task in the database
@@ -31,31 +41,61 @@ const createTask = async (req, res) => {
 }
 
 // Fetch a single task from the database
-const getTask = (req, res) => {
-    res.status(200).json({
-        success: true,
-        message: 'One task',
-        id: req.params
-    });
+const getTask = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const task = await Task.findById(id);
+
+        res.status(200).json({
+            success: true,
+            task
+        });
+    } catch (error) {
+        res.status(404).json({
+            success: false,
+            message: `Task with id: ${id} not found`
+        })
+    }
 }
 
 // Update a task in the database
-const updateTask = (req, res) => {
-    res.status(201).json({
-        success: true,
-        message: 'Task updated',
-        data: req.body,
-        id: req.params
-    });
+const updateTask = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const taskUpdated = await Task.findByIdAndUpdate(id, req.body, { returnDocument: 'after' });
+
+        res.status(201).json({
+            success: true,
+            message: 'Task updated',
+            task: taskUpdated
+        });
+    } catch (error) {
+        res.status(404).json({
+            success: false,
+            message: `Task with id: ${id} not found`,
+            error: error
+        })
+    }
 }
 
 // Delete a task from the database
-const deleteTask = (req, res) => {
-    res.status(200).json({
-        success: true,
-        message: 'Task deleted',
-        id: req.params
-    });
+const deleteTask = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const taskDeleted = await Task.findByIdAndDelete(id);
+
+        res.status(200).json({
+            success: true,
+            message: 'Task deleted',
+            task: taskDeleted
+        });
+    } catch (error) {
+        res.status(404).json({
+            success: false,
+            message: `Task with id: ${id} not found`,
+            error: error
+        });
+    }
 }
 
 // Export the controller functions
