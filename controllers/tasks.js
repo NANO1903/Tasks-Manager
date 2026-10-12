@@ -46,15 +46,24 @@ const getTask = async (req, res) => {
         const id = req.params.id;
         const task = await Task.findById(id);
 
+        if (!task) {
+            return res.status(404).json({
+                success: false,
+                message: `Task with id: ${id} not found`
+            })
+        }
+
         res.status(200).json({
             success: true,
             task
         });
+
     } catch (error) {
-        res.status(404).json({
+        res.status(500).json({
             success: false,
-            message: `Task with id: ${id} not found`
-        })
+            message: 'Error fetching task',
+            error: error
+        });
     }
 }
 
@@ -62,17 +71,23 @@ const getTask = async (req, res) => {
 const updateTask = async (req, res) => {
     try {
         const id = req.params.id;
-        const taskUpdated = await Task.findByIdAndUpdate(id, req.body, { returnDocument: 'after' });
+        const taskUpdated = await Task.findByIdAndUpdate(id, req.body, { returnDocument: 'after', runValidators: true });
 
+        if (!taskUpdated) {
+            return res.status(404).json({
+                success: false,
+                message: `Task with id: ${id} not found`
+            });
+        }
         res.status(201).json({
             success: true,
             message: 'Task updated',
             task: taskUpdated
         });
     } catch (error) {
-        res.status(404).json({
+        return res.status(500).json({
             success: false,
-            message: `Task with id: ${id} not found`,
+            message: 'Error updating task',
             error: error
         })
     }
@@ -84,17 +99,25 @@ const deleteTask = async (req, res) => {
         const id = req.params.id;
         const taskDeleted = await Task.findByIdAndDelete(id);
 
+        if (!taskDeleted) {
+            return res.status(404).json({
+                success: false,
+                message: `Task with id: ${id} not found`
+            });
+        }
+
         res.status(200).json({
             success: true,
             message: 'Task deleted',
             task: taskDeleted
         });
+
     } catch (error) {
-        res.status(404).json({
+        return res.status(500).json({
             success: false,
-            message: `Task with id: ${id} not found`,
+            message: 'Error deleting task',
             error: error
-        });
+        })
     }
 }
 
