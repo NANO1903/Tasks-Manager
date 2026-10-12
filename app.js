@@ -4,6 +4,7 @@ require('dotenv').config();
 const express = require('express');
 const tasks = require('./routes/tasks');
 const connectDB = require('./db/connect');
+const dns = require('dns');
 
 const app = express();
 
@@ -14,31 +15,12 @@ app.use(express.json());
 app.use(express.static('./public'));
 
 
-
 // Routes
-app.get('/hello', (req, res) => {
-    res.send('Task Manager App');
-});
 
 app.use('/api/v1/tasks', tasks);
 
 
-
-
-
-
-
-
-/*
-    - get all the tasks
-    - create a new task
-    - get single task
-    - update task
-    - delete task
-*/
-
-// console.log(process.env.MONGODB_URI);
-
+dns.setServers(['8.8.8.8', '8.8.4.4']);
 const start = async () => {
     try {
         await connectDB(process.env.MONGODB_URI);
@@ -53,4 +35,4 @@ const start = async () => {
 
 start();
 
-// console.clear()
+console.clear();
